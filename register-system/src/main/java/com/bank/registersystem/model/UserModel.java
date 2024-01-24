@@ -25,4 +25,7 @@ public class UserModel {
     @Column(name = "user_type")
     @Enumerated(EnumType.STRING)
     private UserTypeEnum userType;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "wallet_id", referencedColumnName = "id")
+    private WalletModel wallet;
 }

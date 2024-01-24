@@ -1,6 +1,5 @@
 package com.bank.registersystem.controller;
 
-import com.bank.registersystem.dto.UpdateRequestDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.service.UserService;
 import jakarta.validation.Valid;
@@ -27,7 +26,7 @@ public class UserController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable(name = "id") Long id,
-                                             @RequestBody @Valid UpdateRequestDTO dto) {
+                                             @RequestBody @Valid UserRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserService(id, dto));
     }
 

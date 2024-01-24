@@ -1,6 +1,5 @@
 package com.bank.registersystem.service;
 
-import com.bank.registersystem.dto.UpdateRequestDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.dto.UserResponseDTO;
 import com.bank.registersystem.error.ExistingUserException;
@@ -22,21 +21,14 @@ public class UserService {
     }
 
     public UserResponseDTO createUserService(UserRequestDTO dto) {
-        if (repository.findByIdentity(dto.getIdentity()).isPresent())
-            throw new ExistingUserException("cpf or cnpj already exists");
-        if (repository.findByEmail(dto.getEmail()).isPresent())
-            throw new ExistingUserException("email already exists");
-
+        checkUserExistence(dto);
         var saveUser = repository.save(tos.transferToModel(dto));
 
         return tos.transferToDto(saveUser);
     }
 
-    public UserResponseDTO updateUserService(Long id, UpdateRequestDTO dto) {
-        if (repository.findByIdentity(dto.getIdentity()).isPresent())
-            throw new ExistingUserException("cpf or cnpj already exists");
-        if (repository.findByEmail(dto.getEmail()).isPresent())
-            throw new ExistingUserException("email already exists");
+    public UserResponseDTO updateUserService(Long id, UserRequestDTO dto) {
+        checkUserExistence(dto);
         if (repository.findById(id).isEmpty()) throw new UserNotFoundException("User id not found!");
 
         var saveUser = repository.save(tos.updateToModel(id, dto));
@@ -48,5 +40,12 @@ public class UserService {
         if (user.isEmpty()) throw new UserNotFoundException("User id not found!");
 
         repository.delete(user.get());
+    }
+
+    private void checkUserExistence(UserRequestDTO dto) {
+        if (repository.findByIdentity(dto.getIdentity()).isPresent())
+            throw new ExistingUserException("cpf or cnpj already exists");
+        if (repository.findByEmail(dto.getEmail()).isPresent())
+            throw new ExistingUserException("email already exists");
     }
 }
