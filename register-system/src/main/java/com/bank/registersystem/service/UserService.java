@@ -1,8 +1,10 @@
 package com.bank.registersystem.service;
 
+import com.bank.registersystem.dto.UpdateRequestDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.dto.UserResponseDTO;
 import com.bank.registersystem.error.ExistingUserException;
+import com.bank.registersystem.error.UserNotFoundException;
 import com.bank.registersystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +30,23 @@ public class UserService {
         var saveUser = repository.save(tos.transferToModel(dto));
 
         return tos.transferToDto(saveUser);
+    }
+
+    public UserResponseDTO updateUserService(Long id, UpdateRequestDTO dto) {
+        if (repository.findByIdentity(dto.getIdentity()).isPresent())
+            throw new ExistingUserException("cpf or cnpj already exists");
+        if (repository.findByEmail(dto.getEmail()).isPresent())
+            throw new ExistingUserException("email already exists");
+        if (repository.findById(id).isEmpty()) throw new UserNotFoundException("User id not found!");
+
+        var saveUser = repository.save(tos.updateToModel(id, dto));
+        return tos.transferToDto(saveUser);
+    }
+
+    public void deleteUserService(Long id) {
+        var user = repository.findById(id);
+        if (user.isEmpty()) throw new UserNotFoundException("User id not found!");
+
+        repository.delete(user.get());
     }
 }

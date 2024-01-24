@@ -1,5 +1,6 @@
 package com.bank.registersystem.service;
 
+import com.bank.registersystem.dto.UpdateRequestDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.dto.UserResponseDTO;
 import com.bank.registersystem.model.UserModel;
@@ -26,6 +27,17 @@ public class TransferObjectService {
                 .password(model.getPassword())
                 .name(model.getName())
                 .userType(model.getUserType())
+                .build();
+    }
+
+    public UserModel updateToModel(Long id, UpdateRequestDTO dto) {
+        return UserModel.builder()
+                .id(id)
+                .email(dto.getEmail())
+                .name(dto.getName())
+                .password(dto.getPassword())
+                .identity(dto.getIdentity())
+                .userType(dto.getUserType())
                 .build();
     }
 }

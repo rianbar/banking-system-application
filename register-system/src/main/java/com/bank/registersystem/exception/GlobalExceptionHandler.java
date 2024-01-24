@@ -2,6 +2,7 @@ package com.bank.registersystem.exception;
 
 import com.bank.registersystem.error.ErrorTemplate;
 import com.bank.registersystem.error.ExistingUserException;
+import com.bank.registersystem.error.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,5 +32,15 @@ public class GlobalExceptionHandler {
 
         var response = new ErrorTemplate(code, type, message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> UserNotFoundExceptionHandler(UserNotFoundException ex) {
+        final int code = HttpStatus.NOT_FOUND.value();
+        final String type = HttpStatus.NOT_FOUND.toString();
+        String message = ex.getMessage();
+
+        var response = new ErrorTemplate(code, type, message);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }
