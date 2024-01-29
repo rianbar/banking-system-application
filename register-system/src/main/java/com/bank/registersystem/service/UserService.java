@@ -1,12 +1,17 @@
 package com.bank.registersystem.service;
 
+import com.bank.registersystem.configuration.TokenService;
+import com.bank.registersystem.dto.LoginPayloadDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.dto.UserResponseDTO;
 import com.bank.registersystem.error.ExistingUserException;
+import com.bank.registersystem.error.InvalidLoginException;
 import com.bank.registersystem.error.UserNotFoundException;
 import com.bank.registersystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -14,10 +19,21 @@ public class UserService {
     private final UserRepository repository;
     private final TransferObjectService tos;
 
+    private final TokenService tokenService;
+
     @Autowired
-    public UserService(UserRepository repository, TransferObjectService tos) {
+    public UserService(UserRepository repository, TransferObjectService tos, TokenService service) {
         this.repository = repository;
         this.tos = tos;
+        this.tokenService = service;
+    }
+
+    public String loginUserService(LoginPayloadDTO dto) {
+        var user = repository.findByEmail(dto.getEmail());
+        if (user.isEmpty() || !Objects.equals(user.get().getPassword(), dto.getPassword()))
+            throw new InvalidLoginException("email or password is wrong!");
+
+        return tokenService.generateToken(user.get());
     }
 
     public UserResponseDTO createUserService(UserRequestDTO dto) {

@@ -1,5 +1,9 @@
 server:
   port: 8000
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:swimming}
 spring:
   application:
     name: register-system
@@ -14,3 +18,4 @@ spring:
       ddl-auto: update
     generate-ddl: true
     show-sql: true
+

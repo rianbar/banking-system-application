@@ -1,5 +1,6 @@
 package com.bank.registersystem.controller;
 
+import com.bank.registersystem.dto.LoginPayloadDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.service.UserService;
 import jakarta.validation.Valid;
@@ -19,7 +20,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/create")
+    @GetMapping("/login")
+    public ResponseEntity<String> getUserById(@RequestBody LoginPayloadDTO dto) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.loginUserService(dto));
+    }
+
+    @PostMapping("/register")
     public ResponseEntity<Object> createUser(@RequestBody @Valid UserRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUserService(dto));
     }
