@@ -20,7 +20,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<String> getUserById(@RequestBody LoginPayloadDTO dto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.loginUserService(dto));
     }
