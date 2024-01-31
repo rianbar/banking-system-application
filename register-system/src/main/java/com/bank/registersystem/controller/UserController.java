@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("user")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserService userService;
@@ -20,8 +21,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getUserById(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByIdService(id));
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<String> getUserById(@RequestBody LoginPayloadDTO dto) {
+    public ResponseEntity<String> loginUser(@RequestBody LoginPayloadDTO dto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.loginUserService(dto));
     }
 

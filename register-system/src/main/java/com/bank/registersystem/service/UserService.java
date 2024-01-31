@@ -28,6 +28,13 @@ public class UserService {
         this.tokenService = service;
     }
 
+    public UserResponseDTO getUserByIdService(Long id) {
+        var user = repository.findById(id);
+        if (user.isEmpty()) throw new UserNotFoundException("user 'id' not found!");
+
+        return tos.transferToDto(user.get());
+    }
+
     public String loginUserService(LoginPayloadDTO dto) {
         var user = repository.findByEmail(dto.getEmail());
         if (user.isEmpty() || !Objects.equals(user.get().getPassword(), dto.getPassword()))
