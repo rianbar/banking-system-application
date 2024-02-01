@@ -18,4 +18,12 @@ public class BusinessRulesService {
 
         return !(payee.getId() == null || payer.getId() == null);
     }
+
+    public boolean checkBalance(Long payerID) {
+        var payer = proxyConnection.getUserById(payerID);
+
+        return payer.getWallet().getBalance() <= 0;
+    }
+
+
 }

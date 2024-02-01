@@ -30,10 +30,9 @@ public class SecurityConfig {
         return security
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorization -> authorization
-                        .requestMatchers(HttpMethod.GET, "/user/{id}").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.PUT, "/user/update/{id}").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/user/delete/{id}").authenticated()
+                        .anyRequest().permitAll())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
 

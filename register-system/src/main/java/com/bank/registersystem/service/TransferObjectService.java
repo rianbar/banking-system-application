@@ -30,6 +30,7 @@ public class TransferObjectService {
                 .password(model.getPassword())
                 .name(model.getName())
                 .userType(model.getUserType())
+                .wallet(model.getWallet())
                 .build();
     }
 
