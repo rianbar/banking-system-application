@@ -12,6 +12,7 @@ import com.bank.registersystem.model.WalletModel;
 import com.bank.registersystem.repository.UserRepository;
 import com.bank.registersystem.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -79,11 +80,15 @@ public class UserService {
         return wallet.get();
     }
 
-    public WalletModel updateWalletService(Long id, UpdateWalletDTO dto) {
+    public void updateWalletService(Long id, UpdateWalletDTO dto) {
         var wallet = walletRepository.findById(id);
         if (wallet.isEmpty()) throw new UserNotFoundException("wallet not found!");
         wallet.get().setBalance(dto.getBalance());
-        return walletRepository.save(wallet.get());
+        walletRepository.save(wallet.get());
+    }
+
+    public UserDetails getUserByNameService(String name) {
+        return repository.findByName(name);
     }
 
     private void checkUserExistence(UserRequestDTO dto) {

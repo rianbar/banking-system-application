@@ -60,4 +60,9 @@ public class UserController {
         userService.updateWalletService(id, dto);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/details/{name}")
+    public ResponseEntity<Object> findUserByName(@PathVariable(name = "name") String name) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByNameService(name));
+    }
 }

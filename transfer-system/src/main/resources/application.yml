@@ -1,5 +1,9 @@
 server:
   port: 8100
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:swimming}
 spring:
   application:
     name: transfer-system
