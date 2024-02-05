@@ -9,11 +9,10 @@ public class ProxyResponseDTO {
     private String identity;
     private String email;
     private String password;
-    private Wallet wallet;
+    private WalletDTO wallet;
+    private UserTypeEnum userType;
 
-    @Data
-    public static class Wallet {
-        private Long id;
-        private Double balance;
+    public enum UserTypeEnum {
+        USER, SHOPKEEPER
     }
 }

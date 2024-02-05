@@ -23,22 +23,27 @@ public class BusinessRulesService {
         var payee = proxyConnection.getUserById(payeeId);
         var payer = proxyConnection.getUserById(payerId);
 
-        return !(payee.getId() == null || payer.getId() == null);
+        return payee.getId() == null || payer.getId() == null;
     }
 
-    public boolean checkBalance(Long payerID) {
+    public boolean checkBalance(Long payerID, double value) {
         var payer = proxyConnection.getUserById(payerID);
-        return payer.getWallet().getBalance() <= 0;
+
+        return payer.getWallet().getBalance() < value;
     }
 
-    public void transferValue(Long payeeId, double value) {
+    public void transferValue(Long payeeId, Long payerId, double value) {
         var payee = proxyConnection.getUserById(payeeId);
+        var payer = proxyConnection.getUserById(payerId);
         var wallet = proxyConnection.getWalletById(payee.getWallet().getId());
+        var payerWallet = proxyConnection.getWalletById(payer.getWallet().getId());
 
         double amount = wallet.getBalance();
         double updatedBalance = amount + value;
 
-        if (authorizingProxy.getAuthorization().equalsIgnoreCase("Autorizado")) {
+        if (authorizingProxy.getAuthorization().getMessage().equalsIgnoreCase("Autorizado")) {
+            proxyConnection.updateWalletBalance(payerWallet.getId(),
+                    UpdateWalletDTO.builder().balance(payerWallet.getBalance() - value).build());
             proxyConnection.updateWalletBalance(wallet.getId(),
                     UpdateWalletDTO.builder().balance(updatedBalance).build());
         } else {

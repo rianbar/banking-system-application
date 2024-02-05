@@ -18,12 +18,9 @@ public class TransferService {
 
         if (businessRules.checkUsersExistence(dto.getPayee(), dto.getPayer()))
             throw new UserNotFoundException("payee or payer id not found!");
-        if (!businessRules.checkBalance(dto.getPayer())) {
-
-            businessRules.transferValue(dto.getPayee(), dto.getValue());
+        if (!businessRules.checkBalance(dto.getPayer(), dto.getValue())) {
+            businessRules.transferValue(dto.getPayee(), dto.getPayer(), dto.getValue());
         }
-        return "";
+        return "successfully";
     }
-
-
 }

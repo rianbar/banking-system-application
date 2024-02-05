@@ -12,7 +12,6 @@ import com.bank.registersystem.model.WalletModel;
 import com.bank.registersystem.repository.UserRepository;
 import com.bank.registersystem.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -87,8 +86,13 @@ public class UserService {
         walletRepository.save(wallet.get());
     }
 
-    public UserDetails getUserByNameService(String name) {
-        return repository.findByName(name);
+    public UserResponseDTO getUserByEmail(String email) {
+        var user = repository.findByEmail(email);
+        if (user.isPresent()) {
+            return tos.transferToDto(user.get());
+        } else {
+            throw new UserNotFoundException("user not found!");
+        }
     }
 
     private void checkUserExistence(UserRequestDTO dto) {
