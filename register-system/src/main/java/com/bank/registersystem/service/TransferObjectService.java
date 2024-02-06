@@ -34,7 +34,7 @@ public class TransferObjectService {
                 .build();
     }
 
-    public UserModel updateToModel(Long id, UserRequestDTO dto) {
+    public UserModel updateToModel(Long id, UserRequestDTO dto, WalletModel wallet) {
         return UserModel.builder()
                 .id(id)
                 .email(dto.getEmail())
@@ -42,6 +42,7 @@ public class TransferObjectService {
                 .password(dto.getPassword())
                 .identity(dto.getIdentity())
                 .userType(dto.getUserType())
+                .wallet(wallet)
                 .build();
     }
 }

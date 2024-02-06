@@ -60,9 +60,15 @@ public class UserService {
 
     public UserResponseDTO updateUserService(Long id, UserRequestDTO dto) {
         checkUserExistence(dto);
-        if (repository.findById(id).isEmpty()) throw new UserNotFoundException("User id not found!");
+        var user = repository.findById(id);
+        WalletModel userWallet;
+        if (user.isPresent()) {
+            userWallet = user.get().getWallet();
+        } else {
+            throw new UserNotFoundException("User id not found!");
+        }
 
-        var saveUser = repository.save(tos.updateToModel(id, dto));
+        var saveUser = repository.save(tos.updateToModel(id, dto, userWallet));
         return tos.transferToDto(saveUser);
     }
 

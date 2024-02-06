@@ -22,7 +22,7 @@ public class TransferController {
     }
 
     @PostMapping("/transaction")
-    public ResponseEntity<String> sendValue(@RequestBody UserTransactionDTO dto) {
+    public ResponseEntity<Object> sendValue(@RequestBody UserTransactionDTO dto) {
         return ResponseEntity.status(HttpStatus.OK).body(transferService.transactionService(dto));
     }
 }

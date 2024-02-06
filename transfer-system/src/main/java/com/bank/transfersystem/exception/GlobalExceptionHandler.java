@@ -1,5 +1,6 @@
 package com.bank.transfersystem.exception;
 
+import com.bank.transfersystem.error.BusinessRuleException;
 import com.bank.transfersystem.error.ConnectionFailureException;
 import com.bank.transfersystem.error.ErrorTemplate;
 import com.bank.transfersystem.error.UserNotFoundException;
@@ -29,5 +30,15 @@ public class GlobalExceptionHandler {
 
         var response = new ErrorTemplate(code, type, message);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Object> businessRuleHandler(BusinessRuleException ex) {
+        final int code = HttpStatus.BAD_REQUEST.value();
+        final String type = HttpStatus.BAD_REQUEST.toString();
+        String message = ex.getMessage();
+
+        var response = new ErrorTemplate(code, type, message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }

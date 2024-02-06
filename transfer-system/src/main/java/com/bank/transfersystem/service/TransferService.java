@@ -1,5 +1,6 @@
 package com.bank.transfersystem.service;
 
+import com.bank.transfersystem.dto.TransactionResponseDTO;
 import com.bank.transfersystem.dto.UserTransactionDTO;
 import com.bank.transfersystem.error.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,19 @@ public class TransferService {
         this.businessRules = businessRules;
     }
 
-    public String transactionService(UserTransactionDTO dto) {
+    public TransactionResponseDTO transactionService(UserTransactionDTO dto) {
 
         if (businessRules.checkUsersExistence(dto.getPayee(), dto.getPayer()))
             throw new UserNotFoundException("payee or payer id not found!");
         if (!businessRules.checkBalance(dto.getPayer(), dto.getValue())) {
             businessRules.transferValue(dto.getPayee(), dto.getPayer(), dto.getValue());
         }
-        return "successfully";
+
+        String mail = businessRules.sendMailService();
+        String message = "transaction was successfully made.";
+        return TransactionResponseDTO.builder()
+                .successMailMessage(mail)
+                .successMessage(message)
+                .build();
     }
 }

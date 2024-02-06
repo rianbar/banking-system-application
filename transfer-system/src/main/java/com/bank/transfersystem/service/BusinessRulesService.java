@@ -1,6 +1,7 @@
 package com.bank.transfersystem.service;
 
 import com.bank.transfersystem.dto.UpdateWalletDTO;
+import com.bank.transfersystem.error.BusinessRuleException;
 import com.bank.transfersystem.error.ConnectionFailureException;
 import com.bank.transfersystem.proxy.AuthorizingServiceProxy;
 import com.bank.transfersystem.proxy.RegisterProxyConnection;
@@ -23,6 +24,10 @@ public class BusinessRulesService {
         var payee = proxyConnection.getUserById(payeeId);
         var payer = proxyConnection.getUserById(payerId);
 
+        if (payer.getUserType().name().equalsIgnoreCase("SHOPKEEPER"))
+            throw new BusinessRuleException("impossible to proceed with the transaction " +
+                    "because the payer is a shopkeeper");
+
         return payee.getId() == null || payer.getId() == null;
     }
 
@@ -35,6 +40,7 @@ public class BusinessRulesService {
     public void transferValue(Long payeeId, Long payerId, double value) {
         var payee = proxyConnection.getUserById(payeeId);
         var payer = proxyConnection.getUserById(payerId);
+
         var wallet = proxyConnection.getWalletById(payee.getWallet().getId());
         var payerWallet = proxyConnection.getWalletById(payer.getWallet().getId());
 
@@ -49,5 +55,11 @@ public class BusinessRulesService {
         } else {
             throw new ConnectionFailureException("authorization service denied!");
         }
+    }
+
+    public String sendMailService() {
+        String sent = "sent mail";
+        String denied = "mail service is actually inaccessible";
+        return authorizingProxy.getMailServiceStatus().getMessage().equalsIgnoreCase("true") ? sent : denied;
     }
 }
