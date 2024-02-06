@@ -2,7 +2,6 @@ package com.bank.registersystem.service;
 
 import com.bank.registersystem.configuration.TokenService;
 import com.bank.registersystem.dto.LoginPayloadDTO;
-import com.bank.registersystem.dto.UpdateWalletDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.dto.UserResponseDTO;
 import com.bank.registersystem.error.ExistingUserException;
@@ -10,7 +9,6 @@ import com.bank.registersystem.error.InvalidLoginException;
 import com.bank.registersystem.error.UserNotFoundException;
 import com.bank.registersystem.model.WalletModel;
 import com.bank.registersystem.repository.UserRepository;
-import com.bank.registersystem.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,19 +19,15 @@ public class UserService {
 
     private final UserRepository repository;
 
-    private final WalletRepository walletRepository;
-
     private final TransferObjectService tos;
 
     private final TokenService tokenService;
 
     @Autowired
-    public UserService(UserRepository repository, TransferObjectService tos, TokenService service,
-                       WalletRepository walletRepository) {
+    public UserService(UserRepository repository, TransferObjectService tos, TokenService service) {
         this.repository = repository;
         this.tos = tos;
         this.tokenService = service;
-        this.walletRepository = walletRepository;
     }
 
     public UserResponseDTO getUserByIdService(Long id) {
@@ -77,19 +71,6 @@ public class UserService {
         if (user.isEmpty()) throw new UserNotFoundException("User id not found!");
 
         repository.delete(user.get());
-    }
-
-    public WalletModel findWalletByIdService(Long id) {
-        var wallet = walletRepository.findById(id);
-        if (wallet.isEmpty()) throw new UserNotFoundException("wallet not found!");
-        return wallet.get();
-    }
-
-    public void updateWalletService(Long id, UpdateWalletDTO dto) {
-        var wallet = walletRepository.findById(id);
-        if (wallet.isEmpty()) throw new UserNotFoundException("wallet not found!");
-        wallet.get().setBalance(dto.getBalance());
-        walletRepository.save(wallet.get());
     }
 
     public UserResponseDTO getUserByEmail(String email) {
