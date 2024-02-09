@@ -1,7 +1,6 @@
 package com.bank.registersystem.controller;
 
 import com.bank.registersystem.dto.LoginPayloadDTO;
-import com.bank.registersystem.dto.UpdateWalletDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.service.UserService;
 import jakarta.validation.Valid;
@@ -46,18 +45,6 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable(name = "id") Long id) {
         userService.deleteUserService(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/wallet/{id}")
-    public ResponseEntity<Object> findWalletById(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findWalletByIdService(id));
-    }
-
-    @PutMapping("/wallet/{id}")
-    public ResponseEntity<Object> updateWallet(@PathVariable(name = "id") Long id,
-                                               @RequestBody @Valid UpdateWalletDTO dto) {
-        userService.updateWalletService(id, dto);
         return ResponseEntity.noContent().build();
     }
 
