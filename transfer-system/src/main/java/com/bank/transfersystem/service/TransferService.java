@@ -2,6 +2,7 @@ package com.bank.transfersystem.service;
 
 import com.bank.transfersystem.dto.TransactionResponseDTO;
 import com.bank.transfersystem.dto.UserTransactionDTO;
+import com.bank.transfersystem.error.BusinessRuleException;
 import com.bank.transfersystem.error.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,11 @@ public class TransferService {
 
         if (businessRules.checkUsersExistence(dto.getPayee(), dto.getPayer()))
             throw new UserNotFoundException("payee or payer id not found!");
-        if (!businessRules.checkBalance(dto.getPayer(), dto.getValue())) {
+
+        if (businessRules.checkBalance(dto.getPayer(), dto.getValue())) {
             businessRules.transferValue(dto.getPayee(), dto.getPayer(), dto.getValue());
+        } else {
+            throw new BusinessRuleException("payer don't have the available value in your wallet");
         }
 
         String mail = businessRules.sendMailService();

@@ -34,23 +34,27 @@ public class BusinessRulesService {
     public boolean checkBalance(Long payerID, double value) {
         var payer = proxyConnection.getUserById(payerID);
 
-        return payer.getWallet().getBalance() < value;
+        boolean response = payer.getWallet().getBalance() < value;
+
+        return !response;
     }
 
     public void transferValue(Long payeeId, Long payerId, double value) {
         var payee = proxyConnection.getUserById(payeeId);
         var payer = proxyConnection.getUserById(payerId);
 
-        var wallet = proxyConnection.getWalletById(payee.getWallet().getId());
+        var payeeWallet = proxyConnection.getWalletById(payee.getWallet().getId());
         var payerWallet = proxyConnection.getWalletById(payer.getWallet().getId());
 
-        double amount = wallet.getBalance();
+        double amount = payeeWallet.getBalance();
         double updatedBalance = amount + value;
 
-        if (authorizingProxy.getAuthorization().getMessage().equalsIgnoreCase("Autorizado")) {
+        var auth = authorizingProxy.getAuthorization();
+
+        if (auth.getMessage().equalsIgnoreCase("Autorizado")) {
             proxyConnection.updateWalletBalance(payerWallet.getId(),
                     UpdateWalletDTO.builder().balance(payerWallet.getBalance() - value).build());
-            proxyConnection.updateWalletBalance(wallet.getId(),
+            proxyConnection.updateWalletBalance(payeeWallet.getId(),
                     UpdateWalletDTO.builder().balance(updatedBalance).build());
         } else {
             throw new ConnectionFailureException("authorization service denied!");
