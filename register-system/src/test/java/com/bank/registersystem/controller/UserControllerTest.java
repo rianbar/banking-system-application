@@ -17,21 +17,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
 
     private String token;
-    private final Long id = 1L;
+    private final Long id = 14L; //could be a real id in database
     private final Long unavailableId = 500L;
     private String jsonRequest;
+    private String jsonUpdate;
+    private String jsonLogin;
+    private String email;
     @Autowired
     private MockMvc mvc;
 
     @BeforeEach
     void setUp() {
-        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwcGxpY2F0aW9uIiwic3ViIjoiYW55MTJAZ" +
-                "W1haWwuY29tIiwiZXhwIjoxNzA3OTM3MDc2fQ.XMmW_bCcJotPjYU9PIW0QASx6zkDF9c4PkOB3qs5fMQ";
+        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwcGxpY2F0aW9uIiwic3ViIjoiZ2V0Y29kZUBlbWFpbC5jb" +
+                "20iLCJleHAiOjE3MDgwMjA2NjJ9.NWyXjXKHBUmnIITtC_VLaCxfgLUBdLF4LCO8IN31CkU";
 
-        String email = "anyone@email.com";
-        String identity = "122.323.555-13";
+        email = "anyone12@email.com"; // alter email always you run the test class
+        String identity = "115.325.555-13"; // alter identity always you run the test class
         jsonRequest = "{\"name\":\"any\",\"identity\":\"" + identity + "\"," +
                 "\"email\":\"" + email + "\",\"password\":\"any\",\"userType\":\"USER\"}";
+        jsonUpdate = "{\"name\":\"any\",\"identity\":\"090.224.667-09\"," +
+                "\"email\":\"updateMail@email.com\",\"password\":\"any\",\"userType\":\"USER\"}";
+
+        jsonLogin = "{\"email\":\"" + email + "\",\"password\":\"any\"}";
     }
 
     @Test
@@ -56,7 +63,7 @@ class UserControllerTest {
     void loginUser_withValidUser_returnToken() throws Exception {
         mvc.perform(post("/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\": \"rianbarroso1@email.com\",\"password\": \"riansantos\"}"))
+                        .content(jsonLogin))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.TEXT_PLAIN + ";charset=UTF-8"));
     }
@@ -67,7 +74,7 @@ class UserControllerTest {
 
         mvc.perform(post("/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\": \"any@email.com\",\"password\": \"any\"}"))
+                        .content("{\"email\": \"wrongEmail@email.com\",\"password\": \"wrong\"}"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().json(expectedJson));
     }
@@ -90,13 +97,13 @@ class UserControllerTest {
                 .andExpect(content().json(expectedJson));
     }
 
-
-
     @Test
     void updateUser_withValidData_returnsObject() throws Exception {
+
+
         mvc.perform(put("/user/update/{id}", id)
                 .header("authorization", "Bearer " + token)
-                .contentType(MediaType.APPLICATION_JSON).content(jsonRequest))
+                .contentType(MediaType.APPLICATION_JSON).content(jsonUpdate))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -115,4 +122,20 @@ class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void findUserByEmail_withValidData_returnsObject() throws Exception {
+        mvc.perform(get("/user/details/{email}", email))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void findUserByEmail_withValidData_throwException() throws Exception {
+        String expectedJson = "{\"code\":404,\"type\":\"404 NOT_FOUND\",\"message\":\"user not found!\"}";
+
+        mvc.perform(get("/user/details/{email}", "wrongEmail@email.com"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(expectedJson));
+    }
 }
