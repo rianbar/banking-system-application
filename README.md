@@ -69,3 +69,8 @@ rules for payload fields:
 ```
 To transfer an amount, you must use the payer and payee id and both must exist in the database.
 
+## Dependencies❗
+```bash
+$ docker run --name mysql_container -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql:8.0
+```
+
