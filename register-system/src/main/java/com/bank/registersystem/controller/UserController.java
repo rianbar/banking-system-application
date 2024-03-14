@@ -1,6 +1,5 @@
 package com.bank.registersystem.controller;
 
-import com.bank.registersystem.dto.LoginPayloadDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.service.UserService;
 import jakarta.validation.Valid;
@@ -26,16 +25,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByIdService(id));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginPayloadDTO dto) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.loginUserService(dto));
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<Object> createUser(@RequestBody @Valid UserRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUserService(dto));
-    }
-
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable(name = "id") Long id,
                                              @RequestBody @Valid UserRequestDTO dto) {
@@ -46,10 +35,5 @@ public class UserController {
     public ResponseEntity<Object> deleteUser(@PathVariable(name = "id") Long id) {
         userService.deleteUserService(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/details/{email}")
-    public ResponseEntity<Object> findUserByEmail(@PathVariable(name = "email") String email) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmail(email));
     }
 }

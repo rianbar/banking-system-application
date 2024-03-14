@@ -78,6 +78,7 @@ class UserServiceTest {
                 .isInstanceOf(UserNotFoundException.class);
     }
 
+    /*
     @Test
     void loginUser_withValidData_returnString() {
         when(repository.findByEmail(userModel.getEmail())).thenReturn(Optional.of(userModel));
@@ -117,7 +118,7 @@ class UserServiceTest {
 
         assertNotNull(response);
     }
-
+    */
     @Test
     void updateUser_withValidData_returnObject() {
         when(repository.findById(anyLong())).thenReturn(Optional.of(userModel));
@@ -152,7 +153,7 @@ class UserServiceTest {
         assertThatThrownBy(() -> userService.deleteUserService(1L))
                 .isInstanceOf(UserNotFoundException.class);
     }
-
+    /*
     @Test
     void getUserByEmail_withValidEmail_returnObject() {
         when(repository.findByEmail(anyString())).thenReturn(Optional.of(userModel));
@@ -170,4 +171,6 @@ class UserServiceTest {
         assertThatThrownBy(() -> userService.getUserByEmail("any@email.com"))
                 .isInstanceOf(UserNotFoundException.class);
     }
+
+     */
 }

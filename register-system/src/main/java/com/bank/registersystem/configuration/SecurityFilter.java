@@ -14,6 +14,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static com.bank.registersystem.constant.ErrorMessageConstant.INVALID_LOGIN_MESSAGE;
+
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
@@ -37,17 +39,15 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             if (token != null) {
                 var login = tokenService.validationToken(token);
-                var user = repository.findByEmail(login);
+                var user = repository.findByName(login);
 
-                if (user.isPresent()) {
-                    var authentication = new UsernamePasswordAuthenticationToken(user, null, user.get().getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
             filterChain.doFilter(request, response);
         } catch (RuntimeException ex) {
-            throw new InvalidLoginException("An error occurred while credentials were being validated!");
+            throw new InvalidLoginException(INVALID_LOGIN_MESSAGE);
         }
     }
 

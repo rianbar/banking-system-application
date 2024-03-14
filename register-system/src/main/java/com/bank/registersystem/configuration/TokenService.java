@@ -26,7 +26,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             token = JWT.create()
                     .withIssuer("auth-application")
-                    .withSubject(user.getEmail())
+                    .withSubject(user.getName())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException ex) {
