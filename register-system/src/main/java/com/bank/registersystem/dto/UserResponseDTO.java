@@ -19,5 +19,6 @@ public class UserResponseDTO {
     private String email;
     private String password;
     private UserTypeEnum userType;
+    @JsonIgnore
     private WalletModel wallet;
 }

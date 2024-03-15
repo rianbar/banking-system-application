@@ -16,7 +16,7 @@ public class UserRequestDTO {
     @NotEmpty
     private String name;
     @NotEmpty
-    @Pattern(regexp = "/^[a-z0-9.]+@[a-z0-9]+\\.[a-z]+(\\.[a-z]+)?$/i", message = "Invalid 'cpf' or 'cnpj'")
+    @Pattern(regexp = "[0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}", message = "Invalid 'cpf' or 'cnpj'")
     private String identity;
     @NotEmpty
     @Pattern(regexp=".+@.+\\.[a-z]+", message="Invalid email address!")

@@ -1,9 +1,6 @@
 package com.bank.registersystem.exception;
 
-import com.bank.registersystem.error.ErrorTemplate;
-import com.bank.registersystem.error.ExistingUserException;
-import com.bank.registersystem.error.InvalidLoginException;
-import com.bank.registersystem.error.UserNotFoundException;
+import com.bank.registersystem.error.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -47,11 +44,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidLoginException.class)
     public ResponseEntity<Object> invalidLoginExceptionHandler(InvalidLoginException ex) {
-        final int code = HttpStatus.UNAUTHORIZED.value();
-        final String type = HttpStatus.UNAUTHORIZED.toString();
+        final int code = HttpStatus.BAD_REQUEST.value();
+        final String type = HttpStatus.BAD_REQUEST.toString();
         String message = ex.getMessage();
 
         var response = new ErrorTemplate(code, type, message);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(UnauthorizedUserException.class)
+    public ResponseEntity<Object> unauthorizedUserExceptionHandler(UnauthorizedUserException ex) {
+        final int code = HttpStatus.FORBIDDEN.value();
+        final String type = HttpStatus.FORBIDDEN.toString();
+        String message = ex.getMessage();
+
+        var response = new ErrorTemplate(code, type, message);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 }
