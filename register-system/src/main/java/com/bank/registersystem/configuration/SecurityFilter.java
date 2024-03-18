@@ -42,11 +42,10 @@ public class SecurityFilter extends OncePerRequestFilter {
                 var user = repository.findByName(login);
 
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else throw new UnauthorizedUserException(UNAUTHORIZED_USER_MESSAGE);
+                SecurityContextHolder.getContext().setAuthentication(authentication);}
 
             filterChain.doFilter(request, response);
-        } catch (RuntimeException ex) {
+        } catch (UnauthorizedUserException ex) {
             throw new UnauthorizedUserException(UNAUTHORIZED_USER_MESSAGE);
         }
     }
