@@ -1,4 +1,4 @@
-package com.server.eurekaserver;
+package com.monitoring.eurekaserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
