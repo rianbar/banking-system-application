@@ -5,6 +5,7 @@ import com.bank.registersystem.dto.LoginPayloadDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.dto.UserResponseDTO;
 import com.bank.registersystem.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,7 @@ public class LoginService {
 
     private final CheckRulesService checkRules;
 
+    @Autowired
     public LoginService(TokenService tokenService, UserRepository repository,
                         TransferObjectService tos, CheckRulesService checkRules) {
         this.checkRules = checkRules;

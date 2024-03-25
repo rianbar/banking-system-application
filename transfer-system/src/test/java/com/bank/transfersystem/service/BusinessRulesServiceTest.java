@@ -1,12 +1,7 @@
 package com.bank.transfersystem.service;
 
-import com.bank.transfersystem.dto.GetMockDTO;
-import com.bank.transfersystem.dto.ProxyResponseDTO;
-import com.bank.transfersystem.dto.WalletDTO;
 import com.bank.transfersystem.error.BusinessRuleException;
 import com.bank.transfersystem.error.ConnectionFailureException;
-import com.bank.transfersystem.proxy.AuthorizingServiceProxy;
-import com.bank.transfersystem.proxy.RegisterProxyConnection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

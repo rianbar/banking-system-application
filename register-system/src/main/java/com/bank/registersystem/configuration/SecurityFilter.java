@@ -1,6 +1,6 @@
 package com.bank.registersystem.configuration;
 
-import com.bank.registersystem.error.InvalidLoginException;
+import com.bank.registersystem.error.UnauthorizedUserException;
 import com.bank.registersystem.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.bank.registersystem.constant.ErrorMessageConstant.INVALID_LOGIN_MESSAGE;
+import static com.bank.registersystem.constant.ErrorMessageConstant.UNAUTHORIZED_USER_MESSAGE;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -42,12 +42,11 @@ public class SecurityFilter extends OncePerRequestFilter {
                 var user = repository.findByName(login);
 
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+                SecurityContextHolder.getContext().setAuthentication(authentication);}
 
             filterChain.doFilter(request, response);
-        } catch (RuntimeException ex) {
-            throw new InvalidLoginException(INVALID_LOGIN_MESSAGE);
+        } catch (UnauthorizedUserException ex) {
+            throw new UnauthorizedUserException(UNAUTHORIZED_USER_MESSAGE);
         }
     }
 
