@@ -1,13 +1,12 @@
 package com.gateway.apigateway.configuration;
 
+import com.gateway.apigateway.error.UnauthorizedRequestException;
 import com.gateway.apigateway.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -16,6 +15,7 @@ import reactor.core.publisher.Mono;
 @Component
 public class AuthenticationFilter implements GatewayFilter {
 
+    private static final String ERROR_MESSAGE = "you aren't authorized to access this path";
     private final TokenService tokenService;
     private final RouteValidator validator;
 
@@ -32,25 +32,17 @@ public class AuthenticationFilter implements GatewayFilter {
 
         if (validator.isSecured.test(request)) {
             if (authMissing(request)) {
-                return onError(exchange, HttpStatus.UNAUTHORIZED);
+                throw new UnauthorizedRequestException(ERROR_MESSAGE);
             }
 
             final String token = request.getHeaders().getOrEmpty("Authorization").get(0);
 
             if (tokenService.isExpired(token)) {
-                return onError(exchange, HttpStatus.UNAUTHORIZED);
+                throw new UnauthorizedRequestException(ERROR_MESSAGE);
             }
-
-            return chain.filter(exchange);
         }
 
-        return null;
-    }
-
-    private Mono<Void> onError(ServerWebExchange exchange, HttpStatus status) {
-        ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(status);
-        return response.setComplete();
+        return chain.filter(exchange);
     }
 
     private boolean authMissing(ServerHttpRequest request) {
