@@ -9,11 +9,13 @@ import java.util.function.Predicate;
 @Service
 public class RouteValidator {
 
+    private RouteValidator() {}
+
     public static final List<String> openEndpoints = List.of(
             "/user/login"
     );
 
-    public Predicate<ServerHttpRequest> isSecured =
+    public static final Predicate<ServerHttpRequest> isSecured =
             request -> openEndpoints.stream()
                     .noneMatch(uri -> request.getURI().getPath().contains(uri));
 }

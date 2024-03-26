@@ -32,16 +32,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Object> userNotFoundExceptionHandler(UserNotFoundException ex) {
-        final int code = HttpStatus.NOT_FOUND.value();
-        final String type = HttpStatus.NOT_FOUND.toString();
-        String message = ex.getMessage();
-
-        var response = new ErrorTemplate(code, type, message);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-    }
-
     @ExceptionHandler(InvalidLoginException.class)
     public ResponseEntity<Object> invalidLoginExceptionHandler(InvalidLoginException ex) {
         final int code = HttpStatus.BAD_REQUEST.value();
@@ -50,15 +40,5 @@ public class GlobalExceptionHandler {
 
         var response = new ErrorTemplate(code, type, message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
-
-    @ExceptionHandler(UnauthorizedUserException.class)
-    public ResponseEntity<Object> unauthorizedUserExceptionHandler(UnauthorizedUserException ex) {
-        final int code = HttpStatus.FORBIDDEN.value();
-        final String type = HttpStatus.FORBIDDEN.toString();
-        String message = ex.getMessage();
-
-        var response = new ErrorTemplate(code, type, message);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 }

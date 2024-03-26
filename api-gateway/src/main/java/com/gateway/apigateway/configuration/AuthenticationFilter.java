@@ -17,11 +17,9 @@ public class AuthenticationFilter implements GatewayFilter {
 
     private static final String ERROR_MESSAGE = "you aren't authorized to access this path";
     private final TokenService tokenService;
-    private final RouteValidator validator;
 
     @Autowired
-    public AuthenticationFilter(TokenService tokenService, RouteValidator routeValidator) {
-        this.validator = routeValidator;
+    public AuthenticationFilter(TokenService tokenService) {
         this.tokenService = tokenService;
     }
 
@@ -30,7 +28,7 @@ public class AuthenticationFilter implements GatewayFilter {
         ServerHttpRequest request = exchange.getRequest();
 
 
-        if (validator.isSecured.test(request)) {
+        if (RouteValidator.isSecured.test(request)) {
             if (authMissing(request)) {
                 throw new UnauthorizedRequestException(ERROR_MESSAGE);
             }

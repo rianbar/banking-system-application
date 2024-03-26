@@ -1,4 +1,4 @@
-package com.bank.registersystem.configuration;
+package com.bank.registersystem.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
