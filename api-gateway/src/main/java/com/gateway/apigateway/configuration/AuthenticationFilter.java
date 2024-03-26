@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import static com.gateway.apigateway.configuration.RouteFreedomValidator.isSecured;
+
+
 @RefreshScope
 @Component
 public class AuthenticationFilter implements GatewayFilter {
@@ -28,7 +31,7 @@ public class AuthenticationFilter implements GatewayFilter {
         ServerHttpRequest request = exchange.getRequest();
 
 
-        if (RouteValidator.isSecured.test(request)) {
+        if (isSecured.test(request)) {
             if (authMissing(request)) {
                 throw new UnauthorizedRequestException(ERROR_MESSAGE);
             }

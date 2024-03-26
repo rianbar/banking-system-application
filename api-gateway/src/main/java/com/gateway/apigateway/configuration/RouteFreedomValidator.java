@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @Service
-public class RouteValidator {
+public class RouteFreedomValidator {
 
-    private RouteValidator() {}
+    private RouteFreedomValidator() {}
 
     public static final List<String> openEndpoints = List.of(
-            "/user/login"
+            "/user/login",
+            "/user/register"
     );
 
     public static final Predicate<ServerHttpRequest> isSecured =
