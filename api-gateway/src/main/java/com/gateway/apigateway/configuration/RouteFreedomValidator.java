@@ -12,8 +12,9 @@ public class RouteFreedomValidator {
     private RouteFreedomValidator() {}
 
     public static final List<String> openEndpoints = List.of(
-            "/user/login",
-            "/user/register"
+            "/auth/login",
+            "/auth/register",
+            "/user/update"
     );
 
     public static final Predicate<ServerHttpRequest> isSecured =
