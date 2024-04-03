@@ -1,6 +1,5 @@
 package com.bank.registersystem.service;
 
-import com.bank.registersystem.configuration.TokenService;
 import com.bank.registersystem.dto.LoginPayloadDTO;
 import com.bank.registersystem.dto.UserRequestDTO;
 import com.bank.registersystem.dto.UserResponseDTO;

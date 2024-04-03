@@ -1,14 +1,9 @@
 server:
-  port: 8000
-
-api:
-  security:
-    token:
-      secret: ${JWT_SECRET:d2daa60db2d5fc7f9a3cbbe503b7ebda1550c20ee5478ecbdf547751f6609769}
+  port: 8100
 
 spring:
   application:
-    name: register-service
+    name: user-service
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/db_bank?createDatabaseIfNotExist=true&serverTimezone=UTC
@@ -20,3 +15,5 @@ spring:
       ddl-auto: update
     generate-ddl: true
     show-sql: true
+
+

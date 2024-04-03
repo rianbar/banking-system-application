@@ -1,10 +1,12 @@
-                    dP                                                                                oo
-                    88
-.d8888b. .d8888b. d8888P .d8888b. dP  dP  dP .d8888b. dP    dP    .d8888b. .d8888b. 88d888b. dP   .dP dP .d8888b. .d8888b.
-88'  `88 88'  `88   88   88ooood8 88  88  88 88'  `88 88    88    Y8ooooo. 88ooood8 88'  `88 88   d8' 88 88'  `"" 88ooood8
-88.  .88 88.  .88   88   88.  ... 88.88b.88' 88.  .88 88.  .88          88 88.  ... 88       88 .88'  88 88.  ... 88.  ...
-`8888P88 `88888P8   dP   `88888P' 8888P Y8P  `88888P8 `8888P88    `88888P' `88888P' dP       8888P'   dP `88888P' `88888P'
-     .88                                                   .88
- d8888P                                                d8888P
+  .oooooo.                  .                                                                                                o8o
+ d8P'  `Y8b               .o8                                                                                                `"'
+888            .oooo.   .o888oo  .ooooo.  oooo oooo    ooo  .oooo.   oooo    ooo     .oooo.o  .ooooo.  oooo d8b oooo    ooo oooo   .ooooo.   .ooooo.
+888           `P  )88b    888   d88' `88b  `88. `88.  .8'  `P  )88b   `88.  .8'     d88(  "8 d88' `88b `888""8P  `88.  .8'  `888  d88' `"Y8 d88' `88b
+888     ooooo  .oP"888    888   888ooo888   `88..]88..8'    .oP"888    `88..8'      `"Y88b.  888ooo888  888       `88..8'    888  888       888ooo888
+`88.    .88'  d8(  888    888 . 888    .o    `888'`888'    d8(  888     `888'       o.  )88b 888    .o  888        `888'     888  888   .o8 888    .o
+ `Y8bood8P'   `Y888""8o   "888" `Y8bod8P'     `8'  `8'     `Y888""8o     .8'        8""888P' `Y8bod8P' d888b        `8'     o888o `Y8bod8P' `Y8bod8P'
+                                                                     .o..P'
+                                                                     `Y8P'
+
 ${application.title} ${application.version}
 Powered by Spring Boot ${spring-boot.version}
