@@ -1,6 +1,6 @@
 package com.gateway.apigateway.configuration;
 
-import com.gateway.apigateway.services.TokenService;
+import com.gateway.apigateway.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;

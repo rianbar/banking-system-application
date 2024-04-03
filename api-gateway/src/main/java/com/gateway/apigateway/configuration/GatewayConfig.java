@@ -23,9 +23,9 @@ public class GatewayConfig {
         return builder.routes()
                 .route("user-service", r -> r.path("/user/**")
                         .filters(f -> f.filter(filter))
-                        .uri("http://localhost:8200"))
+                        .uri("lb://user-service"))
                 .route("register-service", r -> r.path("/auth/**")
                         .filters(f -> f.filter(filter))
-                        .uri("http://localhost:8000")).build();
+                        .uri("lb://register-service")).build();
     }
 }

@@ -7,12 +7,12 @@ spring:
 
 eureka:
   client:
-    registerWithEureka: false
-    fetchRegistry: false
-  server:
-    waitTimeInMsWhenSyncEmpty: 0
+    register-with-eureka: false
+    fetch-repository: false
 
 logging:
   level:
-    com.netflix: 'WARN'
-    org.springframework.cloud: 'WARN'
+    com:
+      netflix:
+        eureka: OFF
+        discovery: OFF
